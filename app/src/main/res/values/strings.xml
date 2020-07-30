@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MVIPlayground</string>
+    <string name="get_user">Get user</string>
+    <string name="get_blogs">Get blogs</string>
 </resources>
