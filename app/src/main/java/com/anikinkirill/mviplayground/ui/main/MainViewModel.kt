@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.anikinkirill.mviplayground.model.Blog
+import com.anikinkirill.mviplayground.model.User
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.*
 import com.anikinkirill.mviplayground.ui.main.state.MainViewState
@@ -16,12 +18,11 @@ class MainViewModel : ViewModel() {
 
     val viewState: LiveData<MainViewState> get() = _viewState
 
-    val dataState: LiveData<MainStateEvent> = Transformations.switchMap(_stateEvent) {
+    val dataState: LiveData<MainViewState> = Transformations.switchMap(_stateEvent) {
         handleStateEvent(it)
     }
 
-
-    private fun handleStateEvent(stateEvent: MainStateEvent) : LiveData<MainStateEvent> {
+    private fun handleStateEvent(stateEvent: MainStateEvent) : LiveData<MainViewState> {
         return when(stateEvent) {
             is GetUserEvent -> {
                 AbsentLiveData.create()
@@ -33,6 +34,28 @@ class MainViewModel : ViewModel() {
                 AbsentLiveData.create()
             }
         }
+    }
+
+    fun setBlogsListData(blogs: List<Blog>) {
+        val update = getCurrentViewStateOrNew()
+        update.blogs = blogs
+        _viewState.value = update
+    }
+
+    fun setUserData(user: User) {
+        val update = getCurrentViewStateOrNew()
+        update.user = user
+        _viewState.value = update
+    }
+
+    private fun getCurrentViewStateOrNew() : MainViewState {
+        return viewState.value?.let {
+            it
+        } ?: MainViewState()
+    }
+
+    fun setStateEvent(event: MainStateEvent) {
+        _stateEvent.value = event
     }
 
 }
