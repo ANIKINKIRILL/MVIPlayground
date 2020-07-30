@@ -1,8 +1,9 @@
-package com.anikinkirill.mviplayground
+package com.anikinkirill.mviplayground.ui.main
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import com.anikinkirill.mviplayground.R
 
 class MainFragment : Fragment() {
 
