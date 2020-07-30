@@ -19,3 +19,6 @@ MVI (Model-View-Intent) architecture is the kind of MVVM (Model-View-ViewModel),
 </ol>
 <br>
 <p></p>
+
+## Architecture
+![alt text](https://miro.medium.com/max/1538/1*w0QeeQqrnISXLhYkYZWoAg.png "MVVM Architecture")
