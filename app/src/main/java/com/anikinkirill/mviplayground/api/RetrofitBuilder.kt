@@ -9,6 +9,7 @@ object RetrofitBuilder {
         Retrofit.Builder()
             .baseUrl("https://open-api.xyz/placeholder")
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
     }
 
