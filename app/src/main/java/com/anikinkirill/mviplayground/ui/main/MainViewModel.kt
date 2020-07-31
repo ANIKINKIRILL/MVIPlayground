@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.anikinkirill.mviplayground.model.Blog
 import com.anikinkirill.mviplayground.model.User
+import com.anikinkirill.mviplayground.repository.Repository
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.*
 import com.anikinkirill.mviplayground.ui.main.state.MainViewState
@@ -25,10 +26,10 @@ class MainViewModel : ViewModel() {
     private fun handleStateEvent(stateEvent: MainStateEvent) : LiveData<MainViewState> {
         return when(stateEvent) {
             is GetUserEvent -> {
-                AbsentLiveData.create()
+                Repository.getUser(stateEvent.userId)
             }
             is GetBlogsEvent -> {
-                AbsentLiveData.create()
+                Repository.getBlogs()
             }
             is Non -> {
                 AbsentLiveData.create()

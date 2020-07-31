@@ -33,6 +33,8 @@ class MainFragment : Fragment() {
         viewModel = activity?.let {
             ViewModelProvider(it).get(MainViewModel::class.java)
         } ?: throw Exception("Invalid activity")
+
+        subscribeObservers()
     }
 
     private fun subscribeObservers() {

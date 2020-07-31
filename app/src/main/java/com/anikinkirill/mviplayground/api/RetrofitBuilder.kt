@@ -7,7 +7,7 @@ object RetrofitBuilder {
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://open-api.xyz/placeholder")
+            .baseUrl("https://open-api.xyz/placeholder/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
