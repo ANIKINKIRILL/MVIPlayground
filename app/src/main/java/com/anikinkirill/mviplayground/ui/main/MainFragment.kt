@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.anikinkirill.mviplayground.R
-import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent
-import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.*
+import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.GetBlogsEvent
+import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.GetUserEvent
 
 class MainFragment : Fragment() {
 
@@ -43,12 +43,25 @@ class MainFragment : Fragment() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { datastate ->
             Log.d(TAG, "subscribeObservers: $datastate")
 
-            datastate.blogs?.let { blogs ->
-                viewModel.setBlogsListData(blogs)
+            // Handle data
+            datastate.data?.let { mainViewState ->
+                mainViewState.blogs?.let { blogs ->
+                    viewModel.setBlogsListData(blogs)
+                }
+
+                mainViewState.user?.let {user ->
+                    viewModel.setUserData(user)
+                }
             }
 
-            datastate.user?.let {user ->
-                viewModel.setUserData(user)
+            // Handle error
+            datastate.message?.let {
+
+            }
+
+            // Handle loading
+            if(datastate.loading) {
+
             }
 
         })

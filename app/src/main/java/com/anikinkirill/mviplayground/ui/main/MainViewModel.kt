@@ -11,6 +11,7 @@ import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.*
 import com.anikinkirill.mviplayground.ui.main.state.MainViewState
 import com.anikinkirill.mviplayground.util.AbsentLiveData
+import com.anikinkirill.mviplayground.util.DataState
 
 class MainViewModel : ViewModel() {
 
@@ -19,11 +20,11 @@ class MainViewModel : ViewModel() {
 
     val viewState: LiveData<MainViewState> get() = _viewState
 
-    val dataState: LiveData<MainViewState> = Transformations.switchMap(_stateEvent) {
+    val dataState: LiveData<DataState<MainViewState>> = Transformations.switchMap(_stateEvent) {
         handleStateEvent(it)
     }
 
-    private fun handleStateEvent(stateEvent: MainStateEvent) : LiveData<MainViewState> {
+    private fun handleStateEvent(stateEvent: MainStateEvent) : LiveData<DataState<MainViewState>> {
         return when(stateEvent) {
             is GetUserEvent -> {
                 Repository.getUser(stateEvent.userId)
