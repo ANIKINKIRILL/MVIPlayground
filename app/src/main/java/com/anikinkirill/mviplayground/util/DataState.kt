@@ -1,14 +1,14 @@
 package com.anikinkirill.mviplayground.util
 
 data class DataState<T>(
-    var message: String? = null,
+    var message: Event<String>? = null,
     var loading: Boolean = false,
-    var data: T? = null
+    var data: Event<T>? = null
 ) {
 
     companion object {
         fun <T> error(message: String) : DataState<T> {
-            return DataState(message, false, null)
+            return DataState(Event.messageEvent(message), false, null)
         }
 
         fun <T> loading(isLoading: Boolean) : DataState<T> {
@@ -16,7 +16,7 @@ data class DataState<T>(
         }
 
         fun <T> data(message: String? = null, data: T? = null) : DataState<T> {
-            return DataState(message, false, data)
+            return DataState(Event.messageEvent(message), false, Event.dataEvent(data))
         }
     }
 
