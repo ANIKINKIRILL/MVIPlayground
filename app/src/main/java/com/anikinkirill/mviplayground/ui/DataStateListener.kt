@@ -4,6 +4,6 @@ import com.anikinkirill.mviplayground.util.DataState
 
 interface DataStateListener {
 
-    fun onDataStateChange(dataState: DataState<*>)
+    fun onDataStateChange(dataState: DataState<*>?)
 
 }
