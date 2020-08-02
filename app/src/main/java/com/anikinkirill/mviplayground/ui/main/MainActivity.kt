@@ -43,8 +43,10 @@ class MainActivity : AppCompatActivity(), DataStateListener {
             }
 
             // ERROR
-            it.message?.let { errorMessage ->
-                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+            it.message?.let { event ->
+                event.getContentIfNotHandled()?.let { errorMessage ->
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+                }
             }
         }
     }

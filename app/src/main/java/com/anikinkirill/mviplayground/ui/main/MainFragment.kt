@@ -51,12 +51,13 @@ class MainFragment : Fragment() {
 
             // Handle data
             datastate.data?.let { mainViewState ->
-                mainViewState.blogs?.let { blogs ->
-                    viewModel.setBlogsListData(blogs)
-                }
-
-                mainViewState.user?.let {user ->
-                    viewModel.setUserData(user)
+                mainViewState.getContentIfNotHandled()?.let {
+                    it.blogs?.let { blogs ->
+                        viewModel.setBlogsListData(blogs)
+                    }
+                    it.user?.let { user ->
+                        viewModel.setUserData(user)
+                    }
                 }
             }
         })
