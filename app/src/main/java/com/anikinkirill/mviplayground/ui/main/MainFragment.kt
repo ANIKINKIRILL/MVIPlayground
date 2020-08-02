@@ -7,12 +7,16 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.anikinkirill.mviplayground.R
+import com.anikinkirill.mviplayground.model.Blog
 import com.anikinkirill.mviplayground.ui.DataStateListener
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.GetBlogsEvent
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.GetUserEvent
+import com.anikinkirill.mviplayground.util.TopSpacingItemDecoration
+import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), BlogRecyclerAdapter.Interaction {
 
     companion object {
         private const val TAG = "MainFragment"
@@ -20,6 +24,7 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var dataStateListener: DataStateListener
+    private lateinit var blogAdapter: BlogRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +43,17 @@ class MainFragment : Fragment() {
         } ?: throw Exception("Invalid activity")
 
         subscribeObservers()
+
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        blogAdapter = BlogRecyclerAdapter(this)
+        recycler_view.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = blogAdapter
+            addItemDecoration(TopSpacingItemDecoration(30))
+        }
     }
 
     private fun subscribeObservers() {
@@ -64,7 +80,7 @@ class MainFragment : Fragment() {
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewstate ->
             viewstate.blogs?.let { blogs ->
-                Log.d(TAG, "subscribeObservers: BLOGS: ${blogs.size}")
+                blogAdapter.submitList(blogs)
             }
 
             viewstate.user?.let { user ->
@@ -102,6 +118,10 @@ class MainFragment : Fragment() {
         }catch (e: ClassCastException) {
             Log.d(TAG, "onAttach: $context must implement DataStateListener interface")
         }
+    }
+
+    override fun onItemSelected(position: Int, item: Blog) {
+        Log.d(TAG, "onItemSelected: ${item.title}")
     }
 
 
