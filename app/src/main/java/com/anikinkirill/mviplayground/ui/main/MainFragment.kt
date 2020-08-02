@@ -1,5 +1,6 @@
 package com.anikinkirill.mviplayground.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.anikinkirill.mviplayground.R
+import com.anikinkirill.mviplayground.ui.DataStateListener
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.GetBlogsEvent
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.GetUserEvent
 
@@ -17,6 +19,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var dataStateListener: DataStateListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +46,9 @@ class MainFragment : Fragment() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { datastate ->
             Log.d(TAG, "subscribeObservers: $datastate")
 
+            // Handle loading and error message
+            dataStateListener.onDataStateChange(datastate)
+
             // Handle data
             datastate.data?.let { mainViewState ->
                 mainViewState.blogs?.let { blogs ->
@@ -53,17 +59,6 @@ class MainFragment : Fragment() {
                     viewModel.setUserData(user)
                 }
             }
-
-            // Handle error
-            datastate.message?.let {
-
-            }
-
-            // Handle loading
-            if(datastate.loading) {
-
-            }
-
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewstate ->
@@ -97,6 +92,15 @@ class MainFragment : Fragment() {
 
     private fun triggerGetBlogsEvent() {
         viewModel.setStateEvent(GetBlogsEvent())
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try{
+            dataStateListener = context as DataStateListener
+        }catch (e: ClassCastException) {
+            Log.d(TAG, "onAttach: $context must implement DataStateListener interface")
+        }
     }
 
 
