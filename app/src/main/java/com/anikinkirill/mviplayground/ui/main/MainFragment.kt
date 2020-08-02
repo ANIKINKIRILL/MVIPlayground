@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anikinkirill.mviplayground.R
 import com.anikinkirill.mviplayground.model.Blog
+import com.anikinkirill.mviplayground.model.User
 import com.anikinkirill.mviplayground.ui.DataStateListener
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.GetBlogsEvent
 import com.anikinkirill.mviplayground.ui.main.state.MainStateEvent.GetUserEvent
 import com.anikinkirill.mviplayground.util.TopSpacingItemDecoration
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment(), BlogRecyclerAdapter.Interaction {
@@ -84,10 +86,18 @@ class MainFragment : Fragment(), BlogRecyclerAdapter.Interaction {
             }
 
             viewstate.user?.let { user ->
-                Log.d(TAG, "subscribeObservers: USER: ${user.username}")
+                setUserProperties(user)
             }
         })
 
+    }
+
+    private fun setUserProperties(user: User) {
+        email.text = user.email
+        username.text = user.username
+        view?.let {
+            Glide.with(it.context).load(user.image).into(image)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
